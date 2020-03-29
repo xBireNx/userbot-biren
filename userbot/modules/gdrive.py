@@ -96,7 +96,7 @@ async def gdrive_upload_function(dryb):
                 pass
         if downloader.isSuccessful():
             await dryb.edit(
-                "Downloaded to `{}` successfully !!\nInitiating Upload to Google Drive.."
+                "Downloaded to `{}` successfully !!\nInitiating Upload to Sax Drive.."
                 .format(downloaded_file_name))
             required_file_name = downloaded_file_name
         else:
@@ -106,7 +106,7 @@ async def gdrive_upload_function(dryb):
         if os.path.exists(input_str):
             required_file_name = input_str
             await dryb.edit(
-                "Found `{}` in local server, Initiating Upload to Google Drive.."
+                "Found `{}` in local server, Initiating Upload to Sax Drive.."
                 .format(input_str))
         else:
             await dryb.edit(
@@ -125,7 +125,7 @@ async def gdrive_upload_function(dryb):
         else:
             required_file_name = downloaded_file_name
             await dryb.edit(
-                "Downloaded to `{}` Successfully !!\nInitiating Upload to Google Drive.."
+                "Downloaded to `{}` Successfully !!\nInitiating Upload to Sax Drive.."
                 .format(downloaded_file_name))
     if required_file_name:
         if G_DRIVE_AUTH_TOKEN_DATA is not None:
@@ -147,11 +147,11 @@ async def gdrive_upload_function(dryb):
                                              file_name, mime_type, dryb,
                                              parent_id)
             await dryb.edit(
-                f"File:`{required_file_name}`\nwas Successfully Uploaded to [Google Drive]({g_drive_link})!"
+                f"File:`{required_file_name}`\nwas Successfully Uploaded to [Sax Drive]({g_drive_link})!"
             )
         except Exception as e:
             await dryb.edit(
-                f"Error while Uploading to Google Drive\nError Code:\n`{e}`")
+                f"Error while Uploading to Sax Drive\nError Code:\n`{e}`")
 
 
 @register(pattern=r"^\.ggd(?: |$)(.*)", outgoing=True)
@@ -176,7 +176,7 @@ async def upload_dir_to_gdrive(event):
             http, os.path.basename(os.path.abspath(input_str)), parent_id)
         await DoTeskWithDir(http, input_str, event, dir_id)
         dir_link = "https://drive.google.com/folderview?id={}".format(dir_id)
-        await event.edit(f"Here is your Google Drive [link]({dir_link})")
+        await event.edit(f"Here is your Sax Drive [link]({dir_link})")
     else:
         await event.edit(f"Directory {input_str} does not seem to exist")
 
@@ -197,7 +197,7 @@ async def gdrive_search_list(event):
         storage = await create_token_file(G_DRIVE_TOKEN_FILE, event)
     http = authorize(G_DRIVE_TOKEN_FILE, storage)
     # Authorize, get file parameters, upload file and print out result URL for download
-    await event.edit(f"Searching for {input_str} in your Google Drive ...")
+    await event.edit(f"Searching for {input_str} in your Sax Drive ...")
     gsearch_results = await gdrive_search(http, input_str)
     await event.edit(gsearch_results, link_preview=False)
 
@@ -238,7 +238,7 @@ async def show_current_gdrove_folder(event):
             f"My userbot is currently uploading files [here]({folder_link})")
     else:
         await event.edit(
-            f"My userbot is currently uploading files to the root of my Google Drive storage.\
+            f"My userbot is currently uploading files to the root of my Sax Drive storage.\
             \nFind uploaded files [here](https://drive.google.com/drive/my-drive)"
         )
 
@@ -318,7 +318,7 @@ async def upload_file(http, file_path, file_name, mime_type, event, parent_id):
                 "".join(["░"
                          for i in range(10 - math.floor(percentage / 10))]),
                 round(percentage, 2))
-            current_message = f"Uploading to Google Drive\nFile Name: {file_name}\n{progress_str}"
+            current_message = f"Uploading to Sax Drive\nFile Name: {file_name}\n{progress_str}"
             if display_message != current_message:
                 try:
                     await event.edit(current_message)
@@ -436,14 +436,14 @@ async def gdrive_search(http, search_query):
         except Exception as e:
             res += str(e)
             break
-    msg = f"**Google Drive Query**:\n`{search_query}`\n\n**Results**\n\n{res}"
+    msg = f"**Sax Drive Query**:\n`{search_query}`\n\n**Results**\n\n{res}"
     return msg
 
 
 CMD_HELP.update({
     "gdrive":
     ".gdrive <file_path / reply / URL|file_name>\
-    \nUsage: Uploads the file in reply , URL or file path in server to your Google Drive.\
+    \nUsage: Uploads the file in reply , URL or file path in server to your Sax Drive.\
     \n\n.gsetf <GDrive Folder URL>\
     \nUsage: Sets the folder to upload new files to.\
     \n\n.gsetclear\
@@ -451,7 +451,7 @@ CMD_HELP.update({
     \n\n.gfolder\
     \nUsage: Shows your current upload destination/folder.\
     \n\n.list <query>\
-    \nUsage: Looks for files and folders in your Google Drive.\
+    \nUsage: Looks for files and folders in your Sax Drive.\
     \n\n.ggd <path_to_folder_in_server>\
-    \nUsage: Uploads all the files in the directory to a folder in Google Drive."
+    \nUsage: Uploads all the files in the directory to a folder in Sax Drive."
 })
